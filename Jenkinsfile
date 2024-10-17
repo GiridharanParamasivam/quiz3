@@ -1,26 +1,31 @@
 pipeline {
-    agent any 
+    agent any // Use any available agent
+
+    // Trigger the build every 10 minutes on Mondays
     triggers {
-        cron('H/10 * * * 1') // Trigger every 10 minutes on Mondays
+        cron('H/10 * * * 1')
     }
+
     stages {
         stage('Build') {
             steps {
                 script {
-                    // Run Maven build
-                    sh 'mvn clean package'
+                    // Use bat instead of sh for Windows
+                    bat 'mvn clean package'
                 }
             }
         }
+
         stage('Code Coverage') {
             steps {
                 script {
-                    // Run tests and generate Jacoco report
-                    sh 'mvn test jacoco:report'
+                    // Use bat instead of sh for Windows
+                    bat 'mvn test jacoco:report'
                 }
             }
         }
     }
+
     post {
         always {
             // Archive the Jacoco report
