@@ -8,7 +8,7 @@ pipeline {
             steps {
                 script {
                     // Run Maven build
-                    sh 'mvn clean package'
+                    bat 'mvn clean package' // Use 'bat' for Windows
                 }
             }
         }
@@ -16,7 +16,7 @@ pipeline {
             steps {
                 script {
                     // Run tests and generate Jacoco report
-                    sh 'mvn test jacoco:report'
+                    bat 'mvn test jacoco:report' // Use 'bat' for Windows
                 }
             }
         }
