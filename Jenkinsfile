@@ -7,8 +7,8 @@ pipeline {
         stage('Build') {
             steps {
                 script {
-                    // Run Gradle build
-                    sh './gradlew build'
+                    // Run Maven build
+                    sh 'mvn clean package'
                 }
             }
         }
@@ -16,7 +16,7 @@ pipeline {
             steps {
                 script {
                     // Run tests and generate Jacoco report
-                    sh './gradlew test jacocoTestReport'
+                    sh 'mvn test jacoco:report'
                 }
             }
         }
@@ -24,7 +24,7 @@ pipeline {
     post {
         always {
             // Archive the Jacoco report
-            archiveArtifacts artifacts: 'build/reports/jacoco/test/html/*.html', fingerprint: true
+            archiveArtifacts artifacts: 'target/site/jacoco/*.html', fingerprint: true
         }
     }
 }
