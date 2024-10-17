@@ -1,35 +1,30 @@
 pipeline {
-    agent any // Use any available agent
-
-    // Trigger the build every 10 minutes on Mondays
+    agent any 
     triggers {
-        cron('H/10 * * * 1')
+        cron('H/10 * * * 1') // Trigger every 10 minutes on Mondays
     }
-
     stages {
         stage('Build') {
             steps {
                 script {
-                    // Use bat instead of sh for Windows
-                    bat 'mvn clean package'
+                    // Run Gradle build
+                    sh './gradlew build'
                 }
             }
         }
-
         stage('Code Coverage') {
             steps {
                 script {
-                    // Use bat instead of sh for Windows
-                    bat 'mvn test jacoco:report'
+                    // Run tests and generate Jacoco report
+                    sh './gradlew test jacocoTestReport'
                 }
             }
         }
     }
-
     post {
         always {
             // Archive the Jacoco report
-            archiveArtifacts artifacts: 'target/site/jacoco/*.html', fingerprint: true
+            archiveArtifacts artifacts: 'build/reports/jacoco/test/html/*.html', fingerprint: true
         }
     }
 }
